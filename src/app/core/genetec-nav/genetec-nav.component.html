@@ -1,0 +1,57 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    [ngStyle]="{ display: !(isHandset$ | async) ? 'none' : 'block' }"
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-toolbar class="menu"
+      ><a mat-button routerLink="/">
+        <img class="icon" [src]="Logos.GenetecBlueBg" /></a
+    ></mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLinkActive="active" routerLink="/">{{
+        Navigation.LIST
+      }}</a>
+      <a mat-list-item routerLink="/logs">{{ Navigation.HISTORY }}</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <a
+        *ngIf="!(isHandset$ | async)"
+        routerLinkActive="active"
+        routerLink="/"
+        mat-button
+        color="secondary"
+      >
+        <img class="icon" [src]="Logos.GenetecWhiteBg"
+      /></a>
+      <mat-nav-list *ngIf="!(isHandset$ | async)" class="toolbar-nav">
+        <a
+          routerLinkActive="active"
+          routerLink="/"
+          mat-button
+          color="secondary"
+          class="nav-link"
+          >{{ Navigation.LIST }}</a
+        >
+        <a routerLink="/logs" mat-button color="secondary">{{
+          Navigation.HISTORY
+        }}</a>
+      </mat-nav-list>
+    </mat-toolbar>
+  </mat-sidenav-content>
+</mat-sidenav-container>

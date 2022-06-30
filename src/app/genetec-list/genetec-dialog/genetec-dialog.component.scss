@@ -1,0 +1,26 @@
+.header-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+
+    h2 {
+        font-weight: 'font-bold';
+    }
+}
+
+.dialog-content {
+    padding-bottom: 6px;
+
+    div.content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px 0;
+}
