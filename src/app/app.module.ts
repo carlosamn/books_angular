@@ -27,6 +27,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { GenetecConfirmDialogComponent } from './genetec-list/genetec-confirm-dialog/genetec-confirm-dialog.component';
 import { GenetecLogsComponent } from './genetec-logs/genetec-logs.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,12 @@ import { GenetecLogsComponent } from './genetec-logs/genetec-logs.component';
     MatMenuModule,
     MatProgressSpinnerModule,
     MatDialogModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],
