@@ -1,0 +1,21 @@
+table {
+    width: 100%;
+}
+
+::ng-deep .mat-card:not([class*=mat-elevation-z]) {
+    box-shadow: none;
+}
+
+mat-card .list-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.empty-list {
+    display: flex;
+    justify-content: center;
+}
+
+.mat-elevation-z8 {
+    overflow-x: auto;
+}

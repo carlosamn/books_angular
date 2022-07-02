@@ -1,9 +1,9 @@
 export interface BookI {
   title: string;
   id: number;
-  description: string;
-  publishDate: string;
+  description?: string;
+  publishDate?: string;
   updatedAt: string;
-  authors: string;
+  authors: any;
   changeDetails: string;
 }

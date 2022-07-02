@@ -1,0 +1,112 @@
+<div mat-dialog-title class="header-container">
+  <h2>{{ modalType }} book</h2>
+  <button mat-icon-button type="button" (click)="matdialigRef.close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<form [formGroup]="bookForm" (ngSubmit)="callingFunction()">
+  <div mat-dialog-content class="dialog-content">
+    <div class="content">
+      <!-- Title -->
+      <mat-form-field floatLabel="always">
+        <mat-label>Title</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Ingrese nombre"
+          autocomplete="off"
+          formControlName="title"
+        />
+      </mat-form-field>
+
+      <!-- Description -->
+      <mat-form-field floatLabel="always">
+        <mat-label>Description</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Ingrese nombre"
+          autocomplete="off"
+          formControlName="description"
+        />
+      </mat-form-field>
+
+      <!-- Authors -->
+      <mat-form-field floatLabel="always">
+        <mat-label>Authors</mat-label>
+
+        <mat-chip-list #chipList aria-label="Author selection">
+          <mat-chip *ngFor="let author of authors" (removed)="remove(author)">
+            {{ author.name }}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input
+            placeholder="Authors..."
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)"
+          />
+        </mat-chip-list>
+      </mat-form-field>
+
+      <!--Publication date-->
+      <mat-form-field floatLabel="always">
+        <mat-label>Publication date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="pickerPulish"
+          formControlName="publishDate"
+          readonly
+        />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerPulish"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerPulish></mat-datepicker>
+      </mat-form-field>
+
+      <!--Updated ate-->
+      <mat-form-field
+        floatLabel="always"
+        *ngIf="bookForm.controls['updatedAt']"
+      >
+        <mat-label>Updated at</mat-label>
+        <input
+          class="updated-at"
+          matInput
+          readonly
+          [matDatepicker]="pickerUpdated"
+          formControlName="updatedAt"
+        />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerUpdated"
+          disabled
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerUpdated></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions class="actions">
+    <button (click)="matdialigRef.close()" mat-button>Cancelar</button>
+
+    <button
+      mat-raised-button
+      [color]="'primary'"
+      class="w-32"
+      [disabled]="bookForm.invalid"
+    >
+      <mat-progress-spinner
+        *ngIf="isLoading"
+        [diameter]="24"
+        [mode]="'indeterminate'"
+      ></mat-progress-spinner>
+      <span *ngIf="!isLoading">Save</span>
+    </button>
+  </div>
+</form>

@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { BookI } from '../models/book-interface';
+import { BooksService } from 'src/app/services/books.service';
+import { BookI } from '../../models/book-interface';
 
 @Component({
   selector: 'app-genetec-logs',
@@ -10,21 +11,38 @@ import { BookI } from '../models/book-interface';
   styleUrls: ['./genetec-logs.component.scss'],
 })
 export class GenetecLogsComponent implements OnInit {
+  logs!: BookI[];
+
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
   @ViewChild(MatSort)
   sort!: MatSort;
-  displayedColumns: string[] = ['id', 'title', 'updatedAt', 'changeDetails'];
+  displayedColumns: string[] = [
+    'id',
+    'title',
+    'authors',
+    'updatedAt',
+    'changeDetails',
+  ];
+  dataSource = new MatTableDataSource<BookI>();
 
-  dataSource = new MatTableDataSource<BookI>(ELEMENT_DATA);
+  constructor(private _booksService: BooksService) {}
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._booksService.getLogs().subscribe(() => {});
+    this.getBooksFromService();
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  private getBooksFromService() {
+    this._booksService.logs.subscribe((resp: any) => {
+      this.logs = resp;
+      this.dataSource.data = this.logs;
+    });
   }
 
   applyFilter(filterValue: any) {
@@ -33,24 +51,3 @@ export class GenetecLogsComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 }
-
-const ELEMENT_DATA: BookI[] = [
-  {
-    id: 1235,
-    title: 'Hydrogen',
-    description: 'description',
-    updatedAt: 'H',
-    publishDate: 'H',
-    authors: 'Marlon',
-    changeDetails: 'ruben added as an author',
-  },
-  {
-    id: 4545,
-    title: 'Brida',
-    description: 'description',
-    updatedAt: 'H',
-    publishDate: 'H',
-    authors: 'Paulo cohello',
-    changeDetails: 'title changed to Brida',
-  },
-];

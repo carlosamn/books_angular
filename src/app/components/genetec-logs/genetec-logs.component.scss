@@ -12,6 +12,16 @@ table {
     align-items: center
 }
 
+mat-card .list-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.empty-list {
+    display: flex;
+    justify-content: center;
+}
+
 @media screen and(max-width: '600px') {
     .logs-header { 
         flex-direction: column;

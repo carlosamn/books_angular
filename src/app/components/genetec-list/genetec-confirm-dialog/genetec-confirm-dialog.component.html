@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>{{ DIALOG_TEXT.TITLE }}</h1>
+<div mat-dialog-content>{{ DIALOG_TEXT.CONFIRM }}</div>
+<div class="delete-actions" mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close (click)="matdialigRef.close()">
+    No
+  </button>
+  <button
+    mat-raised-button
+    mat-dialog-close
+    cdkFocusInitial
+    color="primary"
+    (click)="deleteBook()"
+  >
+    Ok
+  </button>
+</div>

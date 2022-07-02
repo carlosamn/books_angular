@@ -3,9 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { BookI } from '../models/book-interface';
+import { BookI } from '../../models/book-interface';
 import { GenetecConfirmDialogComponent } from './genetec-confirm-dialog/genetec-confirm-dialog.component';
 import { GenetecDialogComponent } from './genetec-dialog/genetec-dialog.component';
+import { BooksService } from '../../services/books.service';
 
 @Component({
   selector: 'app-genetec-list',
@@ -13,6 +14,8 @@ import { GenetecDialogComponent } from './genetec-dialog/genetec-dialog.componen
   styleUrls: ['./genetec-list.component.scss'],
 })
 export class GenetecListComponent implements OnInit {
+  books!: BookI[];
+
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
   @ViewChild(MatSort)
@@ -20,16 +23,18 @@ export class GenetecListComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
     'title',
-    'description',
     'authors',
     'publishDate',
     'updatedAt',
     'changeDetails',
     'actions',
   ];
-  dataSource = new MatTableDataSource<BookI>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<BookI>();
 
-  constructor(private matDialog: MatDialog) {}
+  constructor(
+    private matDialog: MatDialog,
+    private _booksService: BooksService
+  ) {}
 
   /**
    * Set the paginator and sort after the view init since this component will
@@ -39,7 +44,16 @@ export class GenetecListComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getBooksFromService();
+  }
+
+  private getBooksFromService() {
+    this._booksService.books.subscribe((resp: any) => {
+      this.books = resp;
+      this.dataSource.data = this.books;
+    });
+  }
 
   applyFilter(filterValue: any) {
     filterValue = filterValue.trim(); // Remove whitespace
@@ -47,44 +61,23 @@ export class GenetecListComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 
-  openDialog(book?: any): void {
+  openDialog(book?: BookI): void {
     this.matDialog
       .open(GenetecDialogComponent, {
-        //data: book,
+        data: book,
         width: '450px',
       })
       .afterClosed()
       .subscribe(() => {});
   }
 
-  deleteBook(book?: any): void {
+  deleteBook(id: string): void {
     this.matDialog
       .open(GenetecConfirmDialogComponent, {
-        //data: book,
         width: '450px',
+        data: { id },
       })
       .afterClosed()
-      .subscribe(() => {});
+      .subscribe(() => this._booksService.getBooks().subscribe(() => {}));
   }
 }
-
-const ELEMENT_DATA: BookI[] = [
-  {
-    id: 1235,
-    title: 'Hydrogen',
-    description: 'description',
-    updatedAt: 'H',
-    publishDate: 'H',
-    authors: 'Marlon',
-    changeDetails: 'ruben added as an author',
-  },
-  {
-    id: 4545,
-    title: 'Brida',
-    description: 'description',
-    updatedAt: 'H',
-    publishDate: 'H',
-    authors: 'Paulo cohello',
-    changeDetails: 'title changed to Brida',
-  },
-];
