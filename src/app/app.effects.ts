@@ -16,12 +16,120 @@ export class AppEffects {
         ofType(actions.loadBooks),
         exhaustMap(() => {
           return this.bookService.getBooks().pipe(
-            map((book: BookI[]) => {
-              return actions.loadBooksSuccess({ book });
+            map((bookList: BookI[]) => {
+              return actions.loadBooksSuccess({ bookList });
             }),
             catchError((error) => {
               return of(
                 actions.loadBooksFailure({
+                  error,
+                })
+              );
+            })
+          );
+        })
+      ),
+    { useEffectsErrorHandler: false }
+  );
+
+  addBook$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actions.addBook),
+        exhaustMap(({ book }) => {
+          return this.bookService.postBooks(book).pipe(
+            map((book: any) => {
+              return actions.addBookSuccess({ book });
+            }),
+            catchError((error) => {
+              return of(
+                actions.addBookFailure({
+                  error,
+                })
+              );
+            })
+          );
+        })
+      ),
+    { useEffectsErrorHandler: false }
+  );
+
+  updateBook$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actions.updateBook),
+        exhaustMap(({ book }) => {
+          return this.bookService.updateBooks(book).pipe(
+            map(() => {
+              return actions.updateBookSucces({ book });
+            }),
+            catchError((error) => {
+              return of(
+                actions.addBookFailure({
+                  error,
+                })
+              );
+            })
+          );
+        })
+      ),
+    { useEffectsErrorHandler: false }
+  );
+
+  deleteBook$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.deleteBook),
+      exhaustMap(({ id }) => {
+        return this.bookService.deleteBooks(id).pipe(
+          map((resp: any) => {
+            return actions.deleteBookSucces({ id });
+          }),
+          catchError((error) => {
+            return of(
+              actions.deleteBookFailure({
+                error,
+              })
+            );
+          })
+        );
+      })
+    )
+  );
+
+  loadLogs$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actions.loadLogs),
+        exhaustMap(() => {
+          return this.bookService.getLogs().pipe(
+            map((logs: BookI[]) => {
+              return actions.loadLogsSuccess({ logs });
+            }),
+            catchError((error) => {
+              return of(
+                actions.loadLogsFailure({
+                  error,
+                })
+              );
+            })
+          );
+        })
+      ),
+    { useEffectsErrorHandler: false }
+  );
+
+  addLog$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actions.addLog),
+        exhaustMap(({ log }) => {
+          return this.bookService.postLog(log).pipe(
+            map((book: any) => {
+              return actions.addLogSuccess({ log });
+            }),
+            catchError((error) => {
+              return of(
+                actions.addLogFailure({
                   error,
                 })
               );

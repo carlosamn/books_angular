@@ -6,7 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BookI } from '../../models/book-interface';
 import { GenetecConfirmDialogComponent } from './genetec-confirm-dialog/genetec-confirm-dialog.component';
 import { GenetecDialogComponent } from './genetec-dialog/genetec-dialog.component';
-import { BooksService } from '../../services/books.service';
+import { select, Store } from '@ngrx/store';
+import * as fromBookSelectors from './../../store';
 
 @Component({
   selector: 'app-genetec-list',
@@ -31,10 +32,7 @@ export class GenetecListComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource<BookI>();
 
-  constructor(
-    private matDialog: MatDialog,
-    private _booksService: BooksService
-  ) {}
+  constructor(private matDialog: MatDialog, private store: Store) {}
 
   /**
    * Set the paginator and sort after the view init since this component will
@@ -44,12 +42,13 @@ export class GenetecListComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+
   ngOnInit(): void {
-    this.getBooksFromService();
+    this.getBooksFromStore();
   }
 
-  private getBooksFromService() {
-    this._booksService.books.subscribe((resp: any) => {
+  private getBooksFromStore() {
+    this.store.pipe(select(fromBookSelectors.getBooks)).subscribe((resp) => {
       this.books = resp;
       this.dataSource.data = this.books;
     });
@@ -75,9 +74,9 @@ export class GenetecListComponent implements OnInit {
     this.matDialog
       .open(GenetecConfirmDialogComponent, {
         width: '450px',
-        data: { id },
+        data: id,
       })
       .afterClosed()
-      .subscribe(() => this._booksService.getBooks().subscribe(() => {}));
+      .subscribe(() => {});
   }
 }

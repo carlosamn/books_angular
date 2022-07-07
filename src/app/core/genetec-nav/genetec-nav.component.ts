@@ -30,7 +30,6 @@ export class GenetecNavComponent {
   @HostListener('click', ['$event.target'])
   onClick(classname: Element) {
     const className = (classname as Element).className;
-    console.log(className);
     if (className === DrawerCloser.ICON || className === DrawerCloser.ITEM) {
       this.el.close();
     }

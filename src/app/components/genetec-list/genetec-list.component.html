@@ -5,7 +5,6 @@
       Add new Book
     </button>
   </div>
-
   <ng-container *ngIf="books && books.length > 0; else empty">
     <mat-form-field>
       <input
@@ -15,7 +14,6 @@
       />
     </mat-form-field>
     <div class="mat-elevation-z8">
-      <!-- <ng-container *ngIf="books && books.length > 0"> -->
       <table mat-table [dataSource]="dataSource" matSort>
         <!-- ID Column -->
         <ng-container matColumnDef="id">

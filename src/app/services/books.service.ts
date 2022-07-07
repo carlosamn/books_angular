@@ -15,33 +15,12 @@ import { BookI } from '../models/book-interface';
   providedIn: 'root',
 })
 export class BooksService {
-  private _books: BehaviorSubject<any> = new BehaviorSubject(null);
-  private _logs: BehaviorSubject<any> = new BehaviorSubject(null);
-
   constructor(private _http: HttpClient) {}
 
-  get books(): Observable<any> {
-    return this._books.asObservable();
-  }
-
-  set books(book: any) {
-    this._books.next(book);
-  }
-
-  get logs(): Observable<any> {
-    return this._logs.asObservable();
-  }
-
-  set logs(book: any) {
-    this._logs.next(book);
-  }
-
   getBooks(): Observable<BookI[]> {
-    return this._http.get(`${environment.apiUrl}/api/Book`).pipe(
-      tap((resp: any) => {
-        this._books.next(resp);
-      })
-    );
+    return this._http
+      .get(`${environment.apiUrl}/api/Book`)
+      .pipe(tap((resp: any) => {}));
   }
 
   getBookById(id: string): Observable<BookI> {
@@ -50,31 +29,31 @@ export class BooksService {
         return response;
       }),
       catchError((response) => {
-        return throwError(response.error);
+        return throwError(() => response.error);
       })
     );
   }
 
-  postBooks(bookData: BookI): Observable<BookI> {
-    return this._http.post(`${environment.apiUrl}/api/Book`, bookData).pipe(
+  postBooks(book: BookI): Observable<BookI> {
+    return this._http.post(`${environment.apiUrl}/api/Book`, book).pipe(
       map((response: any) => {
         return response;
       }),
       catchError((response) => {
-        return throwError(response.error);
+        return throwError(() => response.error);
       })
     );
   }
 
-  updateBooks(bookData: BookI): Observable<BookI> {
+  updateBooks(book: BookI): Observable<BookI> {
     return this._http
-      .put(`${environment.apiUrl}/api/Book/${bookData.id}`, bookData)
+      .put(`${environment.apiUrl}/api/Book/${book.id}`, book)
       .pipe(
         map((response: any) => {
           return response;
         }),
         catchError((response) => {
-          return throwError(response.error);
+          return throwError(() => response.error);
         })
       );
   }
@@ -84,27 +63,25 @@ export class BooksService {
       map((response: any) => {
         return response;
       }),
-      catchError((response) => {
-        return throwError(response.error);
+      catchError((error) => {
+        return throwError(() => error.error);
       })
     );
   }
 
   getLogs(): Observable<BookI[]> {
-    return this._http.get(`${environment.apiUrl}/api/Logs`).pipe(
-      tap((resp: any) => {
-        this._logs.next(resp);
-      })
-    );
+    return this._http
+      .get(`${environment.apiUrl}/api/Logs`)
+      .pipe(tap((resp: any) => {}));
   }
 
-  postLog(logData: BookI): Observable<BookI> {
-    return this._http.post(`${environment.apiUrl}/api/Logs`, logData).pipe(
+  postLog(log: BookI): Observable<BookI> {
+    return this._http.post(`${environment.apiUrl}/api/Logs`, log).pipe(
       map((response: any) => {
         return response;
       }),
       catchError((response) => {
-        return throwError(response.error);
+        return throwError(() => response.error);
       })
     );
   }

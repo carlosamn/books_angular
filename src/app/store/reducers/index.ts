@@ -11,9 +11,3 @@ export function reducers(state: BookState, action: Action) {
   })(state, action);
 }
 export const getBooksFeatureState = createFeatureSelector<BookState>('books');
-
-// export const reducers: ActionReducerMap<State> = {};
-
-// export const metaReducers: MetaReducer<State>[] = !environment.production
-//   ? []
-//   : [];

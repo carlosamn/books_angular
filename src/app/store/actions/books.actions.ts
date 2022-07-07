@@ -5,7 +5,7 @@ export const loadBooks = createAction('[Books] Load Books', props);
 
 export const loadBooksSuccess = createAction(
   '[Books] Load Books Success',
-  props<{ book: BookI[] }>()
+  props<{ bookList: BookI[] }>()
 );
 
 export const loadBooksFailure = createAction(
@@ -35,25 +35,49 @@ export const updateBook = createAction(
 
 export const updateBookSucces = createAction(
   '[Books] update Book success',
-  props<{ data: any }>()
+  props<{ book: BookI }>()
 );
 
 export const updateBookFailure = createAction(
-  '[Books] add Book failure',
+  '[Books] update Book failure',
   props<{ error: any }>()
 );
 
 export const deleteBook = createAction(
   '[Books] delete Book',
-  props<{ id: string }>()
+  props<{ id: any }>()
 );
 
 export const deleteBookSucces = createAction(
-  '[Books] update Book success',
-  props<{ data: any }>()
+  '[Books] delete Book success',
+  props<{ id: any }>()
 );
 
 export const deleteBookFailure = createAction(
   '[Books] add Book failure',
+  props<{ error: any }>()
+);
+
+export const loadLogs = createAction('[Logs] Load Logs', props);
+
+export const loadLogsSuccess = createAction(
+  '[Logs] Load Logs Success',
+  props<{ logs: BookI[] }>()
+);
+
+export const loadLogsFailure = createAction(
+  '[Logs] Load Logs Failure',
+  props<{ error: any }>()
+);
+
+export const addLog = createAction('[Logs] add Logs', props<{ log: BookI }>());
+
+export const addLogSuccess = createAction(
+  '[Logs] Add Logs success',
+  props<{ log: BookI }>()
+);
+
+export const addLogFailure = createAction(
+  '[Logs] Add Logs failure',
   props<{ error: any }>()
 );

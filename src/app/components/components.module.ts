@@ -1,14 +1,13 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GenetecListComponent } from './genetec-list/genetec-list.component';
-import { StoreModule } from '@ngrx/store';
-import * as fromBooks from '../store/reducers';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentRoutingModule } from './component-routing.module';
+import { LayoutModule } from '@angular/cdk/layout';
+import { ReactiveFormsModule } from '@angular/forms';
+
+// Angular Material
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { LayoutModule } from '@angular/cdk/layout';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
@@ -20,13 +19,20 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
-import { GenetecLogsComponent } from './genetec-logs/genetec-logs.component';
-import { GenetecDialogComponent } from './genetec-list/genetec-dialog/genetec-dialog.component';
-import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from '../app.effects';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+
+// Components
+import { GenetecConfirmDialogComponent } from './genetec-list/genetec-confirm-dialog/genetec-confirm-dialog.component';
+import { GenetecLogsComponent } from './genetec-logs/genetec-logs.component';
+import { GenetecDialogComponent } from './genetec-list/genetec-dialog/genetec-dialog.component';
+import { GenetecListComponent } from './genetec-list/genetec-list.component';
+
+// RGRX
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from '../app.effects';
+import { StoreModule } from '@ngrx/store';
+import * as fromBooks from '../store/reducers/books.reducer';
 
 // DATETIME
 import { MatNativeDateModule } from '@angular/material/core';
@@ -36,10 +42,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     GenetecListComponent,
     GenetecLogsComponent,
     GenetecDialogComponent,
+    GenetecConfirmDialogComponent,
   ],
   imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
     MatIconModule,
     MatToolbarModule,
     MatButtonModule,
@@ -54,22 +59,20 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatSortModule,
     MatMenuModule,
     MatProgressSpinnerModule,
-    MatDialogModule,
     CommonModule,
     ReactiveFormsModule,
     MatChipsModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatDatepickerModule,
-
-    StoreModule.forFeature('books', fromBooks.reducers),
+    ComponentRoutingModule,
+    MatDialogModule,
+    MatChipsModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    StoreModule.forFeature('books', fromBooks.getBooks),
     EffectsModule.forFeature([AppEffects]),
   ],
 })
-export class ComponentsModule {
-  static forRoot(): ModuleWithProviders<ComponentsModule> {
-    return {
-      ngModule: ComponentsModule,
-    };
-  }
-}
+export class ComponentsModule {}

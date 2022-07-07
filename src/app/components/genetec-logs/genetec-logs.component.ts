@@ -1,9 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+
+// NGRX
+import { BookI } from '../../models/book-interface';
+import { select, Store } from '@ngrx/store';
+import * as fromStore from './../../store';
+
+// Data table / pagination
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { BooksService } from 'src/app/services/books.service';
-import { BookI } from '../../models/book-interface';
 
 @Component({
   selector: 'app-genetec-logs',
@@ -26,11 +31,12 @@ export class GenetecLogsComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource<BookI>();
 
-  constructor(private _booksService: BooksService) {}
+  constructor(private store: Store) {
+    this.store.dispatch(fromStore.loadLogs());
+  }
 
   ngOnInit(): void {
-    this._booksService.getLogs().subscribe(() => {});
-    this.getBooksFromService();
+    this.getBooksFromStore();
   }
 
   ngAfterViewInit() {
@@ -38,9 +44,9 @@ export class GenetecLogsComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  private getBooksFromService() {
-    this._booksService.logs.subscribe((resp: any) => {
-      this.logs = resp;
+  private getBooksFromStore() {
+    this.store.pipe(select(fromStore.getLogs)).subscribe((logs: BookI[]) => {
+      this.logs = logs;
       this.dataSource.data = this.logs;
     });
   }

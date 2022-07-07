@@ -11,7 +11,8 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { BooksService } from 'src/app/services/books.service';
 import { BookI } from 'src/app/models/book-interface';
 import { chanegMessage } from 'src/app/utils';
-import { identifierName } from '@angular/compiler';
+import { Store } from '@ngrx/store';
+import * as fromBookSelectors from './../../../store';
 
 @Component({
   selector: 'app-genetec-dialog',
@@ -32,7 +33,7 @@ export class GenetecDialogComponent implements OnInit {
     public matdialigRef: MatDialogRef<GenetecDialogComponent>,
     private _formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public book: BookI,
-    private _booksService: BooksService
+    private store: Store
   ) {}
 
   ngOnInit(): void {
@@ -66,22 +67,17 @@ export class GenetecDialogComponent implements OnInit {
           chanegMessage(this.bookForm, this.book)
         );
         const payload = { ...this.bookForm.value };
-        delete payload.id;
-        this._booksService
-          .postLog(payload)
-          .subscribe((r) => this._booksService.getLogs().subscribe(() => {}));
+        const { id, ...log } = payload;
+        this.store.dispatch(fromBookSelectors.addLog({ log }));
       }
-
-      this._booksService.updateBooks(this.bookForm.value).subscribe(() => {
-        this._booksService.getBooks().subscribe((x) => {});
-        this.matdialigRef.close();
-      });
+      const book = { ...this.bookForm.value };
+      this.store.dispatch(fromBookSelectors.updateBook({ book }));
+      this.matdialigRef.close();
     } else {
       this.bookForm.removeControl('id');
-      this._booksService.postBooks(this.bookForm.value).subscribe(() => {
-        this._booksService.getBooks().subscribe((x) => {});
-        this.matdialigRef.close();
-      });
+      const book = { ...this.bookForm.value };
+      this.store.dispatch(fromBookSelectors.addBook({ book }));
+      this.matdialigRef.close();
     }
   }
 

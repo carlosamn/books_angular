@@ -4,8 +4,10 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
 import { BooksService } from 'src/app/services/books.service';
 import { DeleteBook } from 'src/app/utils';
+import * as fromStore from './../../../store';
 
 @Component({
   selector: 'app-genetec-confirm-dialog',
@@ -16,15 +18,16 @@ export class GenetecConfirmDialogComponent implements OnInit {
   DIALOG_TEXT = DeleteBook;
   constructor(
     public matdialigRef: MatDialogRef<GenetecConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public id: any,
     private matDialog: MatDialog,
-    private _booksService: BooksService
+    private _booksService: BooksService,
+    private store: Store
   ) {}
 
   ngOnInit(): void {}
 
   deleteBook(): void {
+    this.store.dispatch(fromStore.deleteBook({ id: this.id }));
     this.matdialigRef.close();
-    this._booksService.deleteBooks(this.data.id).subscribe(() => {});
   }
 }

@@ -1,23 +1,16 @@
 import { Injectable } from '@angular/core';
-import {
-  Resolve,
-  RouterStateSnapshot,
-  ActivatedRouteSnapshot,
-} from '@angular/router';
+import { Resolve } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { BooksService } from '../services/books.service';
+import * as fromStore from './../store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ListResolver implements Resolve<boolean> {
-  constructor(private _booksService: BooksService) {}
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean> {
-    this._booksService.getBooks().subscribe(() => {});
-
+  constructor(private store: Store) {}
+  resolve(): Observable<boolean> {
+    this.store.dispatch(fromStore.loadBooks());
     return of(true);
   }
 }
