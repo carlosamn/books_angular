@@ -3,7 +3,9 @@
     <mat-card-title>History</mat-card-title>
   </div>
   <h3></h3>
-
+  <ng-container *ngIf="logs.length === 0">
+    <mat-card class="empty-list"><h2>No logs!</h2></mat-card></ng-container
+  >
   <mat-form-field>
     <input
       matInput
@@ -60,8 +62,4 @@
     >
     </mat-paginator>
   </div>
-
-  <ng-container *ngIf="logs.length === 0">
-    <mat-card class="empty-list"><h2>No logs!</h2></mat-card></ng-container
-  >
 </mat-card>

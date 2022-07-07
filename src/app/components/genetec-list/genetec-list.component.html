@@ -5,6 +5,9 @@
       Add new Book
     </button>
   </div>
+  <ng-container *ngIf="books.length === 0">
+    <mat-card class="empty-list"><h2>Empty List!</h2></mat-card></ng-container
+  >
   <mat-form-field>
     <input
       matInput
@@ -95,8 +98,4 @@
     >
     </mat-paginator>
   </div>
-
-  <ng-container *ngIf="books.length === 0">
-    <mat-card class="empty-list"><h2>Empty List!</h2></mat-card></ng-container
-  >
 </mat-card>
