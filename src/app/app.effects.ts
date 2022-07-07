@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { exhaustMap, map, catchError } from 'rxjs/operators';
+import { exhaustMap, map, catchError, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { BooksService } from './services/books.service';
 import * as actions from '../app/store/actions';
@@ -81,8 +81,23 @@ export class AppEffects {
       ofType(actions.deleteBook),
       exhaustMap(({ id }) => {
         return this.bookService.deleteBooks(id).pipe(
-          map((resp: any) => {
-            return actions.deleteBookSucces({ id });
+          switchMap(() => {
+            let log = {
+              id: id,
+              title: `id: ${id}`,
+              authors: [],
+              changeDetails: 'Book deleted',
+              updatedAt: new Date(),
+            };
+
+            return this.bookService.postLog(log).pipe(
+              switchMap((log) => {
+                return of(
+                  actions.deleteBookSucces({ id }),
+                  actions.addLogSuccess({ log })
+                );
+              })
+            );
           }),
           catchError((error) => {
             return of(

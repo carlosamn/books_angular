@@ -22,6 +22,17 @@ mat-card .list-header {
     justify-content: center;
 }
 
+table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  th, td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
 @media screen and(max-width: '600px') {
     .logs-header { 
         flex-direction: column;

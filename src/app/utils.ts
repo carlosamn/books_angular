@@ -23,6 +23,13 @@ export const chanegMessage = (form: any, book: BookI) => {
   if (book.title !== form.controls['title'].value) {
     changes += `title was changed to ${form.controls['title'].value} `;
   }
+  if (book.publishDate !== form.controls['publishDate'].value) {
+    changes += `${
+      changes.length > 0 ? ',' : ''
+    } publish date was changed to ${new Date(
+      form.controls['publishDate'].value
+    ).toLocaleDateString('en-US')} `;
+  }
   if (book.description !== form.controls['description'].value) {
     changes += `${changes.length > 0 ? ',' : ''} description was changed to ${
       form.controls['description'].value

@@ -99,7 +99,7 @@
       mat-raised-button
       [color]="'primary'"
       class="w-32"
-      [disabled]="bookForm.invalid"
+      [disabled]="bookForm.invalid || authors.length < 1"
     >
       <mat-progress-spinner
         *ngIf="isLoading"

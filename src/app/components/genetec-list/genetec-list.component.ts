@@ -15,7 +15,7 @@ import * as fromBookSelectors from './../../store';
   styleUrls: ['./genetec-list.component.scss'],
 })
 export class GenetecListComponent implements OnInit {
-  books!: BookI[];
+  books: BookI[] = [];
 
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
